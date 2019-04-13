@@ -10,3 +10,5 @@ All PRs are merged to develop branch first. DO NOT branch of master. Master cont
    variables, exposed ports, useful file locations and etc.
    
 2. You can use micro commits but commits are squashed upon merge to a macro commit that explains what you've been doing ,i'e the feature/bug/enhancement that you've been working on
+
+3. Always remember to attach the issue 
