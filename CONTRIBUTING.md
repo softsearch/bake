@@ -2,7 +2,7 @@
 
 All PRs are merged to develop branch first. DO NOT branch of master. Master contains production code only
 
-
+*NOTE: Always branch of develop*
 
 ## Pull Request Process
 
