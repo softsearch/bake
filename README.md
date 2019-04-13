@@ -42,4 +42,11 @@ Install requirements
 pip install -r requirements.txt
 ```
 
+To load `.env` create a copy of the `.env_example` 
+
+```
+cp .env_example .env
+```
+
+
 
