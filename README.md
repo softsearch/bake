@@ -58,5 +58,6 @@ Edit `DATABASE_URL` in the `.env` file to include your database creadentails. Th
 DATABASE_URL=psql://username:password@host/dbname
 ```
 
-
+## Contributing
+Please read [CONTRIBUTING.md](https://github.com/softsearch/bake/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
