@@ -34,6 +34,8 @@ Activate the virtual environment
 source venv/bin/activate
 ```
 
+You can use virtualenv to manage you envs
+
 Install requirements
 
 ```
