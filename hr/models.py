@@ -141,8 +141,24 @@ class Employee(models.Model):
 
 
 
+class LeaveType(models.Model):
+    UNITS = (
+        ('day', 'Day'), ('hour', 'Hours')
+    )
+    name = models.CharField(max_length=64)
+    unpaid = models.BooleanField(default=True, help_text="Is Unpaid")
+    request_unit = models.CharField(
+        max_length=32,
+        default="day",
+        help_text="Take Leaves in"
+    )
+
+    valid = models.BooleanField(default=True)
+
+    
 
 class Leave(models.Model):
+    # TODO create a better leave module
     employee = models.ForeignKey(Employee,  on_delete=models.CASCADE, related_name='employee_l')
     supervisor =  models.ForeignKey(Employee,  on_delete=models.CASCADE, related_name='supervisor')
     status = models.CharField(max_length=64, blank=True)
@@ -215,7 +231,7 @@ class Attendance(models.Model):
             return delta.total_seconds() / 3600.0
         
         return (datetime.now(timezone.utc) - self.check_in).total_seconds() / 3600.0 
-        return 
+        
 
 
 
