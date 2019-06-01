@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from django.contrib.auth import get_user_model
 from datetime import date
 import hashlib
+from djmoney.models.fields import MoneyField
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
@@ -27,7 +28,8 @@ class Employee(models.Model):
 
     EDUCATION_LEVEL = (
         ('primary', 'Primary School'),
-        ('secondary', 'Secondary School')
+        ('secondary', 'Secondary School'),
+        ('university', 'University')
     )
 
 
@@ -47,6 +49,8 @@ class Employee(models.Model):
                 default='F',
                 choices=GENDER_CHOICES,
         )
+    date_hired = models.DateField(auto_now_add=True)
+
     active = models.BooleanField(default=True)
     marital = models.CharField(
                 max_length=64,
@@ -124,7 +128,8 @@ class Employee(models.Model):
     image = models.ImageField(upload_to=user_directory_path, default="https://www.gravatar.com/avatar/")
 
     manager = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
-    
+
+    job = models.ForeignKey('Job', on_delete=models.CASCADE, blank=True, related_name="employees", null=True)
 
     
     def get_default_image(self):
@@ -257,4 +262,63 @@ class Department(models.Model):
 #     job_title = models.CharField(max_length=255, blank=True)
     
     
+class Job(models.Model):
+    STATE_CHOICES = (
+        ('open', 'Not Recruiting'),
+        ('recruit', 'Recruitment in Progress')
+    )
+    name = models.CharField(max_length=128)
+    expected_employees = models.IntegerField(blank=True, null=True, help_text="Expected number of employees for this job position after new recruitment")
+
+    description = models.TextField()
+    requirements = models.TextField()
+
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
+    state = models.CharField(
+        max_length=64, 
+        default="recruit",
+        choices=STATE_CHOICES
+    )
+
+
+    @property
+    def no_of_hired_employee(self):
+        """
+        returns the number of emplyees with this job desc
+        """
+        return len(self.employees)
+
+    @property
+    def no_of_recruitment(self):
+        """ 
+        Number of new employees you expect to recruit
+        """
+        if not self.expected_employees:
+            return 1
+        
+        return self.expected_employees - self.no_of_hired_employee
+
+
+
+class Contract(models.Model):
+    """
+        I Have a contract
+    """
+    name = models.CharField(max_length=128)
+    active = models.BooleanField(default=True)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="contract")
+    # TODO think
+    job = models.ForeignKey(Job, on_delete=models.SET_NULL, null=True, blank=True)
+    wage = MoneyField(max_digits=14, decimal_places=2, default_currency='USD')
+    active = models.BooleanField(default=True)
+    note = models.TextField()
+
+    start_date = models.DateField()
+    trial_date_end = models.DateField(blank=True, null=True)
+    date_end = models.DateField(blank=True, null=True)
+
+
+    # state = models
+    # TODO compute the state of the contract
+
 
