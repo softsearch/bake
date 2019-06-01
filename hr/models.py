@@ -210,7 +210,7 @@ class Children(models.Model):
         ("N", "Don't say"),
         ("O", 'Other'),
     )
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="children")
     name = models.CharField(max_length=64, blank=True)
     gender = models.CharField(max_length=2,
                             default='F',
