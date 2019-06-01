@@ -7,7 +7,7 @@ jobs: # A basic unit of work in a run
     working_directory: ~/bake
     docker: # run the steps with Docker
       # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.7
         environment: # environment variables for primary container
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
@@ -32,7 +32,7 @@ jobs: # A basic unit of work in a run
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python3.6/site-packages"
+            - "/usr/local/lib/python3.7/site-packages"
       - run:
           command: |
             pipenv run python manage.py test
